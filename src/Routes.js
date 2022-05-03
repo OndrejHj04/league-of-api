@@ -1,14 +1,27 @@
 import { BrowserRouter, Routes, Route, useRoutes } from "react-router-dom";
 import App from "./App";
 import Build from "./Build";
-import { Children, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { nanoid } from "nanoid";
-import reactRouterToArray from 'react-router-to-array';
+import { getFirestore, addDoc, setDoc, doc, collection, onSnapshot } from "firebase/firestore";
+import { initializeApp } from "firebase/app";
 
 export default function Rt() {
   const [players, setPlayers] = useState(1);
   const [showLinks, setShowLinks] = useState();
   const [allUrls, setAllUrls] = useState([]);
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyDObszvg5RZasNoTHHg32btNLNbdM3A_Hc",
+    authDomain: "league-of-api.firebaseapp.com",
+    projectId: "league-of-api",
+    storageBucket: "league-of-api.appspot.com",
+    messagingSenderId: "622387037522",
+    appId: "1:622387037522:web:09e6d814a07999c059e68b",
+  };
+  initializeApp(firebaseConfig);
+  const db = getFirestore();
+  const urlRef = collection(db, "urls");
 
   const getPlayers = (p) => {
     setPlayers(p);
@@ -20,24 +33,35 @@ export default function Rt() {
 
   useEffect(() => {
     if (showLinks) {
-      setAllUrls([]);
       [...Array(Number(players))].forEach((item) => {
-        setAllUrls((oldVal) => {
-          return [...oldVal, nanoid()];
+        const id = nanoid();
+        setDoc(doc(db, "urls", id), {
+          url: id,
+          time: new Date().getTime()
         });
       });
     }
   }, [showLinks]);
 
+  useEffect(()=>{
+    onSnapshot(urlRef, (snapshot) =>{
+      let arr = []
+      snapshot.docs.forEach(doc=>{
+        arr.push({...doc.data()})
+      })
+      setAllUrls(arr)
+    })
+  },[])
 
   console.log(allUrls)
+
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} />}></Route>
         {
-          (showLinks&&(allUrls.map(item=><Route key={item} path={item} element={<Build />}/>)))
-        }
+          allUrls.map(item=><Route key={item.url} path={item.url} element={<Build />}/>)
+        } 
       </Routes>
     </BrowserRouter>
   );
