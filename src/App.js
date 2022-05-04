@@ -1,25 +1,6 @@
-import { useEffect, useState } from "react";
 import logo from "./logo.png";
 import copy from "./copy.png";
 export default function App({ players, getPlayers, links, showLinks, newUrls }) {
-  const [chapmions, setChampions] = useState(); 
-  const [items, setItems] = useState();
-  const [runes, setRunes] = useState();
-  console.log(chapmions, runes, items)
-  useEffect(() => {
-    fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
-      .then((res) => res.json())
-      .then((data) => setChampions(data.data));
-
-    fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/item.json")
-      .then((res) => res.json())
-      .then((data) => setItems(data));
-
-    fetch("http://ddragon.leagueoflegends.com/cdn/10.16.1/data/en_US/runesReforged.json")
-      .then((res) => res.json())
-      .then((data) => setRunes(data));
-  }, []);
-
   const countPlayers = (event) => {
     links(false);
     getPlayers(event.target.value);
@@ -73,7 +54,7 @@ export default function App({ players, getPlayers, links, showLinks, newUrls }) 
               newUrls.map((item, i) => {
                 return (
                   <div className="bg-gray-50 p-1 text-lg my-2 flex justify-between" key={i}>
-                    <p className="link">{document.location+item}</p>
+                    <a href={document.location+item} target="_blank" rel="noreferrer" className="link text-blue-500 font-semibold">{document.location+item}</a>
                   </div>
                 );
               })}
