@@ -74,7 +74,6 @@ export default function Rt() {
         arr.push(doc.data().url);
       }
     });
-    console.log(arr);
     arr.forEach((item) => {
       deleteDoc(doc(db, "urls", item));
     });

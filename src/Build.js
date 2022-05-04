@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 export default function Build() {
-  const [chapmions, setChampions] = useState();
+  const [chapmions, setChampions] = useState([]);
   const [items, setItems] = useState();
   const [runes, setRunes] = useState();
-
+  console.log(chapmions, runes, items);
   useEffect(() => {
     fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
       .then((res) => res.json())
@@ -18,6 +18,11 @@ export default function Build() {
       .then((data) => setRunes(data));
   }, []);
 
-  console.log(chapmions, items, runes)
-  return <h1>css</h1>;
+  return (
+    <div className="max-w-lg mx-auto">
+      <div>
+        <p>Champion</p>
+      </div>
+    </div>
+  );
 }
