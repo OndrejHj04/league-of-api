@@ -5,7 +5,6 @@ import { useEffect, useState, useRef } from "react";
 import { nanoid } from "nanoid";
 import { getFirestore, setDoc, doc, collection, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
-import reactRouterToArray from 'react-router-to-array';
 
 export default function Rt() {
   const [players, setPlayers] = useState(1);
@@ -76,7 +75,7 @@ export default function Rt() {
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} newUrls={newUrls}/>}></Route>
         {allUrls.map((item) => (
-          console.log(reactRouterToArray(<Route key={item.url} path={item.url} element={<Build />} />))
+          <Route key={item.url} path={item.url} element={<Build />} />
         ))}
         <Route path="xd" element={<Build />} />
       </Routes>
