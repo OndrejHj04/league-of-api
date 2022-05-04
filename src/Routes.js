@@ -1,9 +1,9 @@
-import { BrowserRouter, Routes, Route, useRoutes } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import App from "./App";
 import Build from "./Build";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { nanoid } from "nanoid";
-import { getFirestore, addDoc, setDoc, doc, collection, onSnapshot } from "firebase/firestore";
+import { getFirestore, setDoc, doc, collection, onSnapshot } from "firebase/firestore";
 import { initializeApp } from "firebase/app";
 
 export default function Rt() {
@@ -31,37 +31,44 @@ export default function Rt() {
     setShowLinks(p);
   };
 
+
   useEffect(() => {
     if (showLinks) {
       [...Array(Number(players))].forEach((item) => {
         const id = nanoid();
         setDoc(doc(db, "urls", id), {
           url: id,
-          time: new Date().getTime()
+          time: new Date().getTime(),
         });
       });
     }
-  }, [showLinks]);
+  }, [showLinks, db, players]);
 
-  useEffect(()=>{
-    onSnapshot(urlRef, (snapshot) =>{
-      let arr = []
-      snapshot.docs.forEach(doc=>{
-        arr.push({...doc.data()})
-      })
-      setAllUrls(arr)
-    })
-  },[])
+  const getData = () => {
+    onSnapshot(urlRef, (snapshot) => {
+      let arr = [];
+      snapshot.docs.forEach((doc) => {
+        arr.push({ ...doc.data() });
+      });
+      setAllUrls(arr);
+    });
+  };
 
-  console.log(allUrls)
+  const tempData = useRef();
+
+  tempData.current = getData;
+  useEffect(() => {
+    tempData.current();
+  }, []);
+
 
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} />}></Route>
-        {
-          allUrls.map(item=><Route key={item.url} path={item.url} element={<Build />}/>)
-        } 
+        {allUrls.map((item) => (
+          <Route key={item.url} path={item.url} element={<Build />} />
+        ))}
       </Routes>
     </BrowserRouter>
   );

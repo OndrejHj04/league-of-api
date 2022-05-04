@@ -2,10 +2,10 @@ import { useEffect, useState } from "react";
 import logo from "./logo.png";
 import copy from "./copy.png";
 export default function App({ players, getPlayers, links, showLinks }) {
-  const [chapmions, setChampions] = useState();
+  const [chapmions, setChampions] = useState(); 
   const [items, setItems] = useState();
   const [runes, setRunes] = useState();
-
+  //console.log(chapmions, runes, items)
   useEffect(() => {
     fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
       .then((res) => res.json())
@@ -46,7 +46,7 @@ export default function App({ players, getPlayers, links, showLinks }) {
   return (
     <div className="max-w-lg mx-auto">
       <div className="relative w-full mx-auto">
-        <img src={logo} className="w-full" />
+        <img src={logo} className="w-full" alt=""/>
         <div className="absolute bg-red-500 h-5 w- bottom-32"></div>
       </div>
 
