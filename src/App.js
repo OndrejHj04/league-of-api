@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
 import logo from "./logo.png";
 import copy from "./copy.png";
-export default function App({ players, getPlayers, links, showLinks }) {
+export default function App({ players, getPlayers, links, showLinks, newUrls }) {
   const [chapmions, setChampions] = useState(); 
   const [items, setItems] = useState();
   const [runes, setRunes] = useState();
-  //console.log(chapmions, runes, items)
+  console.log(chapmions, runes, items)
   useEffect(() => {
     fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
       .then((res) => res.json())
@@ -70,10 +70,10 @@ export default function App({ players, getPlayers, links, showLinks }) {
           </div>
           <div>
             {showLinks &&
-              [...Array(Number(players))].map((item, i) => {
+              newUrls.map((item, i) => {
                 return (
                   <div className="bg-gray-50 p-1 text-lg my-2 flex justify-between" key={i}>
-                    <p className="link">xxxxx</p>
+                    <p className="link">{document.location+item}</p>
                   </div>
                 );
               })}

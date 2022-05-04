@@ -10,6 +10,7 @@ export default function Rt() {
   const [players, setPlayers] = useState(1);
   const [showLinks, setShowLinks] = useState();
   const [allUrls, setAllUrls] = useState([]);
+  const [newUrls, setNewUrls] = useState([])
 
   const firebaseConfig = {
     apiKey: "AIzaSyDObszvg5RZasNoTHHg32btNLNbdM3A_Hc",
@@ -33,6 +34,7 @@ export default function Rt() {
 
 
   useEffect(() => {
+    setNewUrls([])
     if (showLinks) {
       [...Array(Number(players))].forEach((item) => {
         const id = nanoid();
@@ -40,6 +42,12 @@ export default function Rt() {
           url: id,
           time: new Date().getTime(),
         });
+        setNewUrls(oldVal=>{
+          return [
+            ...oldVal,
+            id
+          ]
+        })
       });
     }
   }, [showLinks, db, players]);
@@ -65,7 +73,7 @@ export default function Rt() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} />}></Route>
+        <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} newUrls={newUrls}/>}></Route>
         {allUrls.map((item) => (
           <Route key={item.url} path={item.url} element={<Build />} />
         ))}
