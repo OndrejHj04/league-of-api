@@ -1,6 +1,7 @@
 import logo from "./logo.png";
 import copy from "./copy.png";
 export default function App({ players, getPlayers, links, showLinks, newUrls }) {
+
   const countPlayers = (event) => {
     links(false);
     getPlayers(event.target.value);
