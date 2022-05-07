@@ -18,18 +18,18 @@ export default function Rt() {
   const [ss, setSs] = useState();
 
   useEffect(() => {
-    fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
+    fetch("https://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/champion.json")
       .then((res) => res.json())
       .then((data) => setChampions(data.data));
 
-    fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/item.json")
+    fetch("https://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/item.json")
       .then((res) => res.json())
       .then((data) => setItems(data));
 
-    fetch("http://ddragon.leagueoflegends.com/cdn/10.16.1/data/en_US/runesReforged.json")
+    fetch("https://ddragon.leagueoflegends.com/cdn/10.16.1/data/en_US/runesReforged.json")
       .then((res) => res.json())
       .then((data) => setRunes(data));
-    fetch("http://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/summoner.json")
+    fetch("https://ddragon.leagueoflegends.com/cdn/12.8.1/data/en_US/summoner.json")
       .then((res) => res.json())
       .then((data) => {
         setSs(data);
