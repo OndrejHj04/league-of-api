@@ -90,32 +90,31 @@ export default function Rt() {
 
   const randomSs = () => {
     let arr = [ss.data.SummonerFlash, ss.data.SummonerBarrier, ss.data.SummonerDot, ss.data.SummonerExhaust, ss.data.SummonerHeal, ss.data.SummonerHaste];
-    return arr[Math.floor(Math.random() * arr.length)].image;
+    return arr[Math.floor(Math.random() * arr.length)].image.full;
   };
 
   const getRandomItems = () => {
     if (items) {
       let properItems = [];
-      let guardians = []
+      let guardians = [];
+      let mythic = [];
       Object.keys(items.data).forEach((i) => {
-        if (items.data[i].maps[12] && items.data[i].gold.purchasable && items.data[i].from && items.data[i].name !== "Broken Stopwatch") {
+        if (items.data[i].maps[12] && items.data[i].gold.purchasable && items.data[i].from && items.data[i].name !== "Broken Stopwatch" && !items.data[i].description.includes("Mythic")) {
           properItems.push(items.data[i]);
-        }else if(items.data[i].name.includes("Guardian")){
-          guardians.push(items.data[i])
+        } else if (items.data[i].name.includes("Guardian's")) {
+          guardians.push(items.data[i]);
+        } else if (items.data[i].description.includes("Mythic") && items.data[i].maps[12] && items.data[i].gold.purchasable) {
+          mythic.push(items.data[i]);
         }
       });
-      guardians = guardians[Math.floor(Math.random()*guardians.length)].image.full
+      guardians = guardians[Math.floor(Math.random() * guardians.length)].image.full;
 
       let arr = [];
-      for (let i = 0; i < properItems.length; i++) {
-        arr.push(properItems[Math.floor(Math.random() * properItems.length)].image);
+      for (let i = 0; i < 5; i++) {
+        arr.push(properItems[Math.floor(Math.random() * properItems.length)].image.full);
       }
-      while(arr.length < 6){
-        const rand = properItems[Math.floor(Math.random() * properItems.length)].image
-        if(!arr.includes(rand)){
-          arr.push(rand)
-        }
-      }
+
+      arr.unshift(mythic[Math.floor(Math.random() * mythic.length)].image.full);
       return [arr, guardians];
     }
   };
@@ -124,11 +123,12 @@ export default function Rt() {
     while (arr.length < p) {
       let rand = champions[Object.keys(champions)[Math.floor(Math.random() * Object.keys(champions).length)]];
       if (!arr.includes(rand)) {
-        arr.push(rand);
+        arr.push({id: rand.id, title: rand.title});
       }
     }
-    return arr;
+    return arr
   };
+
 
   useEffect(() => {
     setNewUrls([]);
@@ -185,7 +185,7 @@ export default function Rt() {
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} newUrls={newUrls} />}></Route>
         {allUrls.map((item) => (
-          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians}/>} />
+          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians} />} />
         ))}
         <Route path="xd" element={<Build />} />
         <Route path="*" element={<ForOuFor />}></Route>
