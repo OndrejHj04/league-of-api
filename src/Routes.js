@@ -93,12 +93,12 @@ export default function Rt() {
     return arr[Math.floor(Math.random() * arr.length)].image.full;
   };
 
-  const getRandomItems = () => {
+  const getRandomItems = (champ) => {
     if (items) {
       let properItems = [];
       let guardians = [];
       let mythic = [];
-      let boots = []
+      let boots = [];
       Object.keys(items.data).forEach((i) => {
         if (items.data[i].maps[12] && items.data[i].gold.purchasable && items.data[i].from && items.data[i].name !== "Broken Stopwatch" && !items.data[i].description.includes("Mythic") && items.data[i].gold.total > 2000) {
           properItems.push(items.data[i]);
@@ -106,20 +106,20 @@ export default function Rt() {
           guardians.push(items.data[i]);
         } else if (items.data[i].description.includes("Mythic") && items.data[i].maps[12] && items.data[i].gold.purchasable) {
           mythic.push(items.data[i]);
-        }else if(items.data[i].tags.includes("Boots") && items.data[i].gold.purchasable){
-          boots.push(items.data[i])
+        } else if (items.data[i].tags.includes("Boots") && items.data[i].gold.purchasable) {
+          boots.push(items.data[i]);
         }
       });
       guardians = guardians[Math.floor(Math.random() * guardians.length)].image.full;
 
       let arr = [];
-      while(arr.length < 4){
-        const rand = properItems[Math.floor(Math.random() * properItems.length)].image.full
-        if(!arr.includes(rand)){
-          arr.push(rand)
+      while (arr.length < 4) {
+        const rand = properItems[Math.floor(Math.random() * properItems.length)].image.full;
+        if (!arr.includes(rand)) {
+          arr.push(rand);
         }
       }
-      arr.unshift(boots[Math.floor(Math.random()*boots.length)].image.full)
+      arr.unshift(boots[Math.floor(Math.random() * boots.length)].image.full);
       arr.unshift(mythic[Math.floor(Math.random() * mythic.length)].image.full);
       return [arr, guardians];
     }
@@ -129,12 +129,11 @@ export default function Rt() {
     while (arr.length < p) {
       let rand = champions[Object.keys(champions)[Math.floor(Math.random() * Object.keys(champions).length)]];
       if (!arr.includes(rand)) {
-        arr.push({id: rand.id, title: rand.title});
+        arr.push({ id: rand.id, title: rand.title });
       }
     }
-    return arr
+    return arr;
   };
-
 
   useEffect(() => {
     setNewUrls([]);
@@ -142,12 +141,13 @@ export default function Rt() {
       let champs = pickRandomChamp(players); //eslint-disable-next-line
       let res = [...Array(Number(players))].forEach((item, i) => {
         const id = nanoid();
+        const champ = champs[i];
         setDoc(doc(db, "urls", id), {
           url: id,
           time: new Date().getTime(),
-          champion: champs[i],
+          champion: champ,
           mainTree: getMainTree(),
-          items: getRandomItems()[0],
+          items: getRandomItems(champ)[0],
           guardians: getRandomItems()[1],
           ss: randomSs(),
         });
@@ -191,7 +191,7 @@ export default function Rt() {
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} newUrls={newUrls} />}></Route>
         {allUrls.map((item) => (
-          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians}/>} />
+          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians} />} />
         ))}
         <Route path="xd" element={<Build />} />
         <Route path="*" element={<ForOuFor />}></Route>

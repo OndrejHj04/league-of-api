@@ -11,10 +11,10 @@ export default function Build({ champion, mainTree, items, ss, guardians }) {
           <img src={`https://ddragon.canisback.com/img/${mainTree.treeTwo}`} alt="" width="112" height="112" className="m-auto" />
           <img src={`https://ddragon.canisback.com/img/${mainTree.treeThree}`} alt="" width="112" height="112" className="m-auto" />
           <img src={`https://ddragon.canisback.com/img/${mainTree.treeFour}`} alt="" width="112" height="112" className="m-auto" />
-          <img src={`https://ddragon.canisback.com/img/${mainTree.secondFirst}`} alt="" width="112" height="112" className="m-auto"/>
-          <img src={`https://ddragon.canisback.com/img/${mainTree.secondSecond}`} alt="" width="112" height="112" className="m-auto"/>
-          <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${ss}`} alt="" width="112" height="112" className="m-auto"/>
-          <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${guardians}`} alt="" width="112" height="112" className="m-auto"/>
+          <img src={`https://ddragon.canisback.com/img/${mainTree.secondFirst}`} alt="" width="112" height="112" className="m-auto" />
+          <img src={`https://ddragon.canisback.com/img/${mainTree.secondSecond}`} alt="" width="112" height="112" className="m-auto" />
+          <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/spell/${ss}`} alt="" width="112" height="112" className="m-auto" />
+          <img src={`http://ddragon.leagueoflegends.com/cdn/12.8.1/img/item/${guardians}`} alt="" width="112" height="112" className="m-auto" />
         </div>
 
         <div className="flex justify-between">
