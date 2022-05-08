@@ -98,22 +98,28 @@ export default function Rt() {
       let properItems = [];
       let guardians = [];
       let mythic = [];
+      let boots = []
       Object.keys(items.data).forEach((i) => {
-        if (items.data[i].maps[12] && items.data[i].gold.purchasable && items.data[i].from && items.data[i].name !== "Broken Stopwatch" && !items.data[i].description.includes("Mythic")) {
+        if (items.data[i].maps[12] && items.data[i].gold.purchasable && items.data[i].from && items.data[i].name !== "Broken Stopwatch" && !items.data[i].description.includes("Mythic") && items.data[i].gold.total > 2000) {
           properItems.push(items.data[i]);
         } else if (items.data[i].name.includes("Guardian's")) {
           guardians.push(items.data[i]);
         } else if (items.data[i].description.includes("Mythic") && items.data[i].maps[12] && items.data[i].gold.purchasable) {
           mythic.push(items.data[i]);
+        }else if(items.data[i].tags.includes("Boots") && items.data[i].gold.purchasable){
+          boots.push(items.data[i])
         }
       });
       guardians = guardians[Math.floor(Math.random() * guardians.length)].image.full;
 
       let arr = [];
-      for (let i = 0; i < 5; i++) {
-        arr.push(properItems[Math.floor(Math.random() * properItems.length)].image.full);
+      while(arr.length < 4){
+        const rand = properItems[Math.floor(Math.random() * properItems.length)].image.full
+        if(!arr.includes(rand)){
+          arr.push(rand)
+        }
       }
-
+      arr.unshift(boots[Math.floor(Math.random()*boots.length)].image.full)
       arr.unshift(mythic[Math.floor(Math.random() * mythic.length)].image.full);
       return [arr, guardians];
     }
@@ -185,7 +191,7 @@ export default function Rt() {
       <Routes>
         <Route path="/" element={<App players={players} showLinks={showLinks} getPlayers={getPlayers} links={links} newUrls={newUrls} />}></Route>
         {allUrls.map((item) => (
-          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians} />} />
+          <Route key={item.url} path={item.url} element={<Build champion={item.champion} mainTree={item.mainTree} items={item.items} ss={item.ss} guardians={item.guardians}/>} />
         ))}
         <Route path="xd" element={<Build />} />
         <Route path="*" element={<ForOuFor />}></Route>
